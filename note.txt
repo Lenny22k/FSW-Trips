@@ -1,0 +1,3 @@
+supabase uma alternativa para o firebase.
+
+supabase password: D5c0KDI7CQcl22D3
