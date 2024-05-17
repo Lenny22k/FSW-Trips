@@ -3,6 +3,7 @@
 import { sign } from "crypto";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 
@@ -20,9 +21,11 @@ export function Header() {
   const handleMenuClick = () => setMenuIsOpen(!menuIsOpen);
   return (
     <div className="container mx-auto p-5 py-0 h-[93px] flex justify-between items-center">
-      <div className="relative h-[32px] w-[182px]">
-        <Image fill src="/logo.png" alt="Full Stack Week" />
-      </div>
+      <Link href="/">
+        <div className="relative h-[32px] w-[182px]">
+          <Image fill src="/logo.png" alt="Full Stack Week" />
+        </div>
+      </Link>
       {status === "unauthenticated" && (
         <button
           className="text-primary text-sm font-semibold"
