@@ -3,12 +3,14 @@
 import Button from "@/components/Button";
 import DatePicker from "@/components/DatePicker";
 import Input from "@/components/Input";
+import { differenceInDays } from "date-fns";
 import { Controller, useForm } from "react-hook-form";
 
 interface TripReservationProps {
   tripStartDate: Date;
   tripEndDate: Date;
   maxGuests: number;
+  pricePerDay: number;
 }
 
 interface TripReservationForm {
@@ -21,6 +23,7 @@ export function TripReservation({
   tripStartDate,
   tripEndDate,
   maxGuests,
+  pricePerDay,
 }: TripReservationProps) {
   const {
     register,
@@ -35,6 +38,7 @@ export function TripReservation({
   };
 
   const starDate = watch("startDate");
+  const endDate = watch("endDate");
 
   return (
     <div className="flex flex-col px-5">
@@ -99,7 +103,11 @@ export function TripReservation({
 
       <div className="flex justify-between mt-3">
         <p className="font-medium text-sm text-primaryDarker">Total: </p>
-        <p className="font-medium text-sm text-primaryDarker">Rs$2500</p>
+        <p className="font-medium text-sm text-primaryDarker">
+          {starDate && endDate
+            ? `R$${differenceInDays(endDate, starDate) * pricePerDay}`
+            : "R$0"}
+        </p>
       </div>
 
       <div className="pb-10 border-b border-b-grayLighter w-full">
