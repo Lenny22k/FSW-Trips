@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import DatePicker from "@/components/DatePicker";
 import Input from "@/components/Input";
 import { differenceInDays } from "date-fns";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 
 interface TripReservationProps {
@@ -36,6 +37,8 @@ export function TripReservation({
     setError,
   } = useForm<TripReservationForm>();
 
+  const router = useRouter();
+
   const onSubmit = async (data: TripReservationForm) => {
     const response = await fetch("http://localhost:3000/api/trips/check", {
       method: "POST",
@@ -50,8 +53,6 @@ export function TripReservation({
 
     const res = await response.json();
 
-    console.log({ res });
-
     if (res?.error?.code === "TRIP_ALREADY_RESERVED") {
       setError("startDate", {
         type: "manual",
@@ -65,7 +66,7 @@ export function TripReservation({
     }
 
     if (res?.error?.code === "INVALID_START_DATE") {
-      setError("startDate", {
+      return setError("startDate", {
         type: "manual",
         message: "Data inválida",
       });
@@ -77,6 +78,10 @@ export function TripReservation({
         message: "Data inválida",
       });
     }
+
+    router.push(
+      `/trips/${tripId}/confirmation?startDate=${data.startDate?.toISOString()}&endDate=${data.endDate?.toISOString()}&guests=${data.guests}`
+    );
   };
 
   const starDate = watch("startDate");
@@ -102,7 +107,7 @@ export function TripReservation({
               selected={field.value}
               placeholderText="Data de Início"
               className="w-full"
-              // minDate={tripStartDate}
+              minDate={tripStartDate}
             />
           )}
         />
