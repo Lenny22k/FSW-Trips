@@ -41,6 +41,10 @@ export default function TripConfirmation({
 
       const res = await response.json();
 
+      if (res?.error) {
+        return router.push("/");
+      }
+
       setTrip(res.trip);
       setTotalPrice(res.totalPrice);
     };
@@ -50,7 +54,7 @@ export default function TripConfirmation({
     }
 
     fetchTrip();
-  }, [status]);
+  }, [status, searchParams, params, router]);
 
   if (!trip) return null;
 
