@@ -1,14 +1,14 @@
 "use client";
 
-import { sign } from "crypto";
-import { signIn, signOut, useSession } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
+import Image from "next/image";
 
 export function Header() {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+
   const { status, data } = useSession();
 
   const handleLoginClick = () => signIn();
@@ -19,6 +19,7 @@ export function Header() {
   };
 
   const handleMenuClick = () => setMenuIsOpen(!menuIsOpen);
+
   return (
     <div className="container mx-auto p-5 py-0 h-[93px] flex justify-between items-center">
       <Link href="/">
@@ -51,9 +52,17 @@ export function Header() {
           />
 
           {menuIsOpen && (
-            <div className="z-50 absolute top-14 left-0 w-full h-full bg-white rounded-lg shadow-md flex flex-col justify-center items-center">
+            <div className="z-50 absolute top-14 left-0 w-full h-[100px] bg-white rounded-lg shadow-md flex flex-col justify-center items-center">
+              <Link href={"/my-trips"}>
+                <button
+                  className="text-primary pb-2 border-b border-grayLighter border-solid text-xs font-semibold"
+                  onClick={handleLogoutClick}
+                >
+                  Minhas viagens
+                </button>
+              </Link>
               <button
-                className="text-primary text-xs font-semibold"
+                className="text-primary pt-2 text-xs font-semibold"
                 onClick={handleLogoutClick}
               >
                 Logout
