@@ -1,11 +1,11 @@
 import Button from "@/components/Button";
+import Image from "next/image";
+import ReactCountryFlag from "react-country-flag";
 import { Prisma } from "@prisma/client";
 import { format } from "date-fns";
-import Image from "next/image";
 import { ptBR } from "date-fns/locale";
-
-import ReactCountryFlag from "react-country-flag";
-
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 interface UserReservationItem {
   reservation: Prisma.TripReservationGetPayload<{
     include: { trip: true };
@@ -14,6 +14,26 @@ interface UserReservationItem {
 
 export function UserReservationItem({ reservation }: UserReservationItem) {
   const { trip } = reservation;
+
+  const router = useRouter();
+
+  const handleDeleteClick = async () => {
+    const response = await fetch(`/api/trips/reservation/${reservation.id}`, {
+      method: "DELETE",
+    });
+    console.log({ response });
+    if (!response.ok) {
+      return toast.error("Ocorreu um erro ao cancelar a reserva!", {
+        position: "bottom-center",
+      });
+    }
+
+    toast.success("Reservada cancelada com sucesso!", {
+      position: "bottom-center",
+    });
+
+    // router.refresh();
+  };
 
   return (
     <div>
@@ -72,7 +92,7 @@ export function UserReservationItem({ reservation }: UserReservationItem) {
             </p>
           </div>
 
-          <Button variant="danger" className="mt-5">
+          <Button variant="danger" className="mt-5" onClick={handleDeleteClick}>
             Cancelar
           </Button>
         </div>
